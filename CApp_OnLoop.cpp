@@ -2,32 +2,78 @@
 
 void CApp::OnLoop(){
 
-    for(auto &planet : planet_vec){
-        planet->ax = planet->ay = 0;
+
+    for(auto planet = planet_vec.begin() ;  planet != planet_vec.end() ; planet ++){
+        (*planet)->ax = (*planet)->ay = 0;
+        if ((*planet)->x > window_width*2 || (*planet)->x < - window_width || (*planet)->y > window_height * 2 || (*planet)->y < -window_height)
+        {
+            free(*planet);
+            planet = planet_vec.erase(planet);
+
+        }
+        
     }
+
+    for(int i = 0; i < planet_vec.size(); i++){
+        for(int j = i+1; j < planet_vec.size(); j++){
+            double dist = std::abs(planet_vec[i]->x - planet_vec[j]->x) + std::abs(planet_vec[i]->y -planet_vec[j]->y);
+            if(dist < (planet_vec[i]->radius + planet_vec[j]->radius)/2 && i != j){
+                double new_r = std::sqrt( (std::pow(planet_vec[i]->radius,2) + std::pow(planet_vec[j]->radius,2)));
+                double new_x = (planet_vec[i]->x * std::pow(planet_vec[i]->radius,2) + planet_vec[j]->x * std::pow(planet_vec[j]->radius,2))/ std::pow(new_r,2);
+                double new_y = (planet_vec[i]->y * std::pow(planet_vec[i]->radius,2) + planet_vec[j]->y * std::pow(planet_vec[j]->radius,2))/ std::pow(new_r,2);
+                double new_Vx = (planet_vec[i]->V_x * std::pow(planet_vec[i]->radius,2) + planet_vec[j]->V_x * std::pow(planet_vec[j]->radius,2))/ std::pow(new_r,2);
+                double new_Vy = (planet_vec[i]->V_y * std::pow(planet_vec[i]->radius,2) + planet_vec[j]->V_y * std::pow(planet_vec[j]->radius,2))/ std::pow(new_r,2);
+                auto new_planet = new Planet(new_x,new_y,new_r,new_Vx,new_Vy);
+                new_planet->color[0] =  (planet_vec[i]->radius > planet_vec[j]->radius) ? planet_vec[i]->color[0] : planet_vec[j]->color[0];
+                new_planet->color[1] =  (planet_vec[i]->radius > planet_vec[j]->radius) ? planet_vec[i]->color[1] : planet_vec[j]->color[1];
+                new_planet->color[2] =  (planet_vec[i]->radius > planet_vec[j]->radius) ? planet_vec[i]->color[2] : planet_vec[j]->color[2];
+                new_planet->color[3] =  (planet_vec[i]->radius > planet_vec[j]->radius) ? planet_vec[i]->color[3] : planet_vec[j]->color[3];
+                free(planet_vec[j]);
+                free(planet_vec[i]);
+                planet_vec.erase(planet_vec.begin() + j);
+                planet_vec.erase(planet_vec.begin() + i);
+                planet_vec.push_back(new_planet);
+
+            }
+        }
+    }
+
+    // for(auto planet_iter = planet_vec.begin();planet_iter != planet_vec.end();){
+    //      for(auto second_planet_iter = planet_vec.begin();second_planet_iter != planet_vec.end();){
+    //         double dist = std::abs((*planet_iter)->x - (*second_planet_iter)->x) + std::abs((*planet_iter)->y - (*second_planet_iter)->y); 
+    //         if(dist < (*planet_iter)->radius && planet_iter != second_planet_iter){
+    //             double new_x = ((*planet_iter)->x + (*second_planet_iter)->x)/2;
+    //             double new_y = ((*planet_iter)->x + (*second_planet_iter)->y)/2; 
+    //             double new_r = ((*planet_iter)->x + (*second_planet_iter)->y); 
+    //             auto new_planet = new Planet(new_x,new_y,new_r);
+    //             planet_vec.push_back(new_planet);
+    //             free(*planet_iter);
+    //             free(*second_planet_iter);
+
+    //             second_planet_iter = planet_vec.erase(second_planet_iter);
+    //             planet_iter = planet_vec.erase(planet_iter);
+    //             // planet_iter++;
+    //             // second_planet_iter+=2;
+    //         }else{
+    //             second_planet_iter++;
+    //         }
+    //     }
+    //     planet_iter++;
+    // }
 
     for(auto &main_planet : planet_vec){
         for(auto &other_planet: planet_vec){
-            // if(main_planet->x > other_planet->x){
                 double dx = main_planet->x - other_planet->x;
                 double dy = main_planet->y - other_planet->y;
-                double r = std::sqrt(dx * dx + dy*dy);
-                double M = other_planet->radius*other_planet->radius;
+                double r = std::sqrt(dx * dx + dy * dy);
+                double M = std::pow(other_planet->radius,2);   
                 double a =  G*M/(r*r + softening_factor);
                 if(r != 0){
                     double ax = a * dx/r;
-                     double ay = a * dy/r;
+                    double ay = a * dy/r;
                     main_planet->ax -= ax;
                     main_planet->ay -= ay;
                 }
-                
-
-                
-                // other_planet->ax += ax;
-
-                // main_planet->ay -= ay;
-                // other_planet->ay += ay;
-            // }
         }
     }
 

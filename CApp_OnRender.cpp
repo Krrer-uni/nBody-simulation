@@ -1,7 +1,7 @@
 #include "CApp.h"
 
 void CApp::OnRender(){
-    SDL_SetRenderDrawColor(renderer, 0xFF,0xFF,0xFF,0xFF);
+    SDL_SetRenderDrawColor(renderer, 0x77,0x86,0x9E,0xFF);
     SDL_RenderClear(renderer);
 
     // SDL_Rect fillRect  = {window_width / 4, window_height /4, window_width /2 , window_height /2};

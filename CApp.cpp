@@ -7,11 +7,11 @@ CApp::CApp(){
     Running = true;
     window_height = 1000;
     window_width = 1000;
-    planet_start_count = 4090;
-    planet_start_radius = 3;
-    softening_factor = 0.1;
+    planet_start_count = 400;
+    planet_start_radius = 4;
+    softening_factor = 5;
     dt = 0.05;
-    G = 4;
+    G = 3;
 }
 
 int CApp::OnExecute(){
