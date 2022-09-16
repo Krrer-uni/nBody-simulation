@@ -18,11 +18,11 @@ void CApp::OnLoop(){
         for(int j = i+1; j < planet_vec.size(); j++){
             double dist = std::abs(planet_vec[i]->x - planet_vec[j]->x) + std::abs(planet_vec[i]->y -planet_vec[j]->y);
             if(dist < (planet_vec[i]->radius + planet_vec[j]->radius)/2 && i != j){
-                double new_r = std::sqrt( (std::pow(planet_vec[i]->radius,2) + std::pow(planet_vec[j]->radius,2)));
-                double new_x = (planet_vec[i]->x * std::pow(planet_vec[i]->radius,2) + planet_vec[j]->x * std::pow(planet_vec[j]->radius,2))/ std::pow(new_r,2);
-                double new_y = (planet_vec[i]->y * std::pow(planet_vec[i]->radius,2) + planet_vec[j]->y * std::pow(planet_vec[j]->radius,2))/ std::pow(new_r,2);
-                double new_Vx = (planet_vec[i]->V_x * std::pow(planet_vec[i]->radius,2) + planet_vec[j]->V_x * std::pow(planet_vec[j]->radius,2))/ std::pow(new_r,2);
-                double new_Vy = (planet_vec[i]->V_y * std::pow(planet_vec[i]->radius,2) + planet_vec[j]->V_y * std::pow(planet_vec[j]->radius,2))/ std::pow(new_r,2);
+                double new_r = std::cbrt(planet_vec[i]->get_M() + planet_vec[j]->get_M());
+                double new_x = (planet_vec[i]->x *planet_vec[i]->get_M() + planet_vec[j]->x * planet_vec[j]->get_M())/ std::pow(new_r,3);
+                double new_y = (planet_vec[i]->y *planet_vec[i]->get_M() + planet_vec[j]->y * planet_vec[j]->get_M())/ std::pow(new_r,3);
+                double new_Vx = (planet_vec[i]->V_x *planet_vec[i]->get_M() + planet_vec[j]->V_x * planet_vec[j]->get_M())/ std::pow(new_r,3);
+                double new_Vy = (planet_vec[i]->V_y *planet_vec[i]->get_M() + planet_vec[j]->V_y * planet_vec[j]->get_M())/ std::pow(new_r,3);
                 auto new_planet = new Planet(new_x,new_y,new_r,new_Vx,new_Vy);
                 new_planet->color[0] =  (planet_vec[i]->radius > planet_vec[j]->radius) ? planet_vec[i]->color[0] : planet_vec[j]->color[0];
                 new_planet->color[1] =  (planet_vec[i]->radius > planet_vec[j]->radius) ? planet_vec[i]->color[1] : planet_vec[j]->color[1];
@@ -65,9 +65,8 @@ void CApp::OnLoop(){
         for(auto &other_planet: planet_vec){
                 double dx = main_planet->x - other_planet->x;
                 double dy = main_planet->y - other_planet->y;
-                double r = std::sqrt(dx * dx + dy * dy);
-                double M = std::pow(other_planet->radius,2);   
-                double a =  G*M/(r*r + softening_factor);
+                double r = std::sqrt(dx * dx + dy * dy);   
+                double a =  G*other_planet->get_M()/(r*r + softening_factor);
                 if(r != 0){
                     double ax = a * dx/r;
                     double ay = a * dy/r;

@@ -41,7 +41,7 @@ Planet::Planet(double x, double y, double radius, double V_x, double V_y){
        std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> color_dist(128,255);
-    
+
     this->x = x;
     this->y = y; 
     this->V_x = V_x;
@@ -54,4 +54,9 @@ Planet::Planet(double x, double y, double radius, double V_x, double V_y){
     this->color[1] = color_dist(rng);
     this->color[2] = color_dist(rng);
     this->color[3] = 5;
+}
+
+
+double Planet::get_M(){
+    return std::pow(this->radius,3);
 }

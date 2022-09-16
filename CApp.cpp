@@ -9,8 +9,8 @@ CApp::CApp(){
     window_width = 1000;
     planet_start_count = 400;
     planet_start_radius = 4;
-    softening_factor = 5;
-    dt = 0.05;
+    softening_factor = 0.1;
+    dt = 0.01;
     G = 3;
 }
 

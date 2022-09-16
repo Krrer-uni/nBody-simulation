@@ -18,4 +18,6 @@ class Planet {
     Planet(double x, double y);
     Planet(double x, double y, double radius);
     Planet(double x, double y, double radius, double V_x, double V_y);
+
+    double get_M();
 };
