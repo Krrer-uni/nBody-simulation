@@ -6,15 +6,15 @@ bool CApp::OnInit(){
     }
 
     if((displayWindow = SDL_CreateWindow("My Game Window",
-                          SDL_WINDOWPOS_UNDEFINED,
-                          SDL_WINDOWPOS_UNDEFINED,
+                          0,
+                          0,
                           window_width, window_height,
                           SDL_WINDOW_OPENGL)) == NULL) {
         return false;
     }
 
 
-    renderer = SDL_CreateRenderer(displayWindow, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(displayWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     SDL_UpdateWindowSurface( displayWindow);
 
 

@@ -1,7 +1,7 @@
 CC = g++
 IDIR = ../include
 SDLDIR=/usr/include/SDL2
-CFLAGS=-I$(SDLDIR) -I$(IDIR)
+CFLAGS=-I$(SDLDIR) -I$(IDIR) -O3
 
 ODIR=obj
 

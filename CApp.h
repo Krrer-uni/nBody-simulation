@@ -22,6 +22,7 @@ class CApp {
         int planet_start_radius;
         double softening_factor;
         double dt;
+        double last_time;
         double G;
     public:
  
