@@ -9,10 +9,13 @@ CApp::CApp(){
     window_width = 1600;
     planet_start_count = 400;
     planet_start_radius = 4;
-    softening_factor = 0.1;
+    softening_factor = 0.1f;
+    time_factor = 2.0f;
     dt = 0.01;
     last_time = SDL_GetTicks();
-    G = 3;
+    G = 3.0f;
+    FPS_CAP = 60.0f;
+    TPF = 1.0f/FPS_CAP;
 }
 
 int CApp::OnExecute(){
@@ -21,6 +24,8 @@ int CApp::OnExecute(){
     }
     Running = true;
     SDL_Event Event;
+
+    last_time = SDL_GetPerformanceCounter();
 
     while(Running) {
         
@@ -33,16 +38,16 @@ int CApp::OnExecute(){
         OnLoop();
         OnRender();
 
-        //tu nie działa
-        Uint64 end = SDL_GetPerformanceCounter();
-
-        
+        Uint64 end = SDL_GetPerformanceCounter();        
     	float elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
         
 	    std::cout << "Current FPS: " << std::to_string(1.0f / elapsed) << std::endl;
 
-        dt = (last_time - end)/1000.0f;
+        dt = time_factor * (end - last_time)/(float)SDL_GetPerformanceFrequency();
+        std::cout << dt << std::endl;
         last_time = end;
+
+        SDL_Delay(floor(TPF - elapsed));
     }
     OnCleanup();
  

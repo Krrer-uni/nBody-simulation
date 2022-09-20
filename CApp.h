@@ -23,7 +23,10 @@ class CApp {
         double softening_factor;
         double dt;
         double last_time;
+        double time_factor;
         double G;
+        uint8_t FPS_CAP;
+        double TPF; //time per frame
     public:
  
         CApp();
