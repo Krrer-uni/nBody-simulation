@@ -1,5 +1,5 @@
 #include <SDL.h>
-
+#pragma once
 class Planet {
 
     public:

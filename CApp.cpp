@@ -1,21 +1,24 @@
 #include "CApp.h"
 #include <iostream>
+
 CApp::CApp(){
     displayWindow = NULL;
     displaySurface = NULL;
     hello = NULL;
     Running = true;
-    window_height = 900;
-    window_width = 1600;
-    planet_start_count = 400;
+    window_height = 1000;
+    window_width = 1000;
+    planet_start_count = 500;
     planet_start_radius = 4;
     softening_factor = 0.1f;
-    time_factor = 2.0f;
+    time_factor = 3.0f;
     dt = 0.01;
     last_time = SDL_GetTicks();
     G = 3.0f;
-    FPS_CAP = 60.0f;
+    FPS_CAP = 144.0f;
     TPF = 1.0f/FPS_CAP;
+    tree = new quadTree(window_width,0,window_height,0,&planet_vec);
+    tree_threshold = 1;
 }
 
 int CApp::OnExecute(){
@@ -29,7 +32,7 @@ int CApp::OnExecute(){
 
     while(Running) {
         
-        Uint64 start = SDL_GetPerformanceCounter();
+        Uint64 loop_start = SDL_GetPerformanceCounter();
 
         while(SDL_PollEvent(&Event)) {
             OnEvent(&Event);
@@ -38,16 +41,20 @@ int CApp::OnExecute(){
         OnLoop();
         OnRender();
 
-        Uint64 end = SDL_GetPerformanceCounter();        
-    	float elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+        Uint64 loop_end = SDL_GetPerformanceCounter();        
+    	float elapsed = (loop_end - loop_start) / (float)SDL_GetPerformanceFrequency();
+
+        dt = time_factor * (loop_end - last_time)/(float)SDL_GetPerformanceFrequency();  
+        last_time = loop_end;
         
+        // std::cout << elapsed << std::endl;
+        if(elapsed < TPF)
+        SDL_Delay((TPF - elapsed)*1000.0f);
+
+        
+        loop_end = SDL_GetPerformanceCounter();        
+    	elapsed = (loop_end - loop_start) / (float)SDL_GetPerformanceFrequency();
 	    std::cout << "Current FPS: " << std::to_string(1.0f / elapsed) << std::endl;
-
-        dt = time_factor * (end - last_time)/(float)SDL_GetPerformanceFrequency();
-        std::cout << dt << std::endl;
-        last_time = end;
-
-        SDL_Delay(floor(TPF - elapsed));
     }
     OnCleanup();
  

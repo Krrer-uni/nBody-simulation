@@ -25,6 +25,8 @@ void CApp::OnRender(){
         SDL_SetRenderDrawColor(renderer, planet->color[0], planet->color[1], planet->color[2], 128);
         DrawFillCircle(renderer, (int)(planet->x), (int)(planet->y), (int)(planet->radius));
     }
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+    DrawQuadTree(renderer,tree);
     SDL_RenderPresent(renderer);
     // SDL_UpdateWindowSurface( displayWindow);
 }

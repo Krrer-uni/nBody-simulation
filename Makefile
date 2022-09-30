@@ -1,11 +1,11 @@
 CC = g++
 IDIR = ../include
 SDLDIR=/usr/include/SDL2
-CFLAGS=-I$(SDLDIR) -I$(IDIR) -O3
+CFLAGS=-I$(SDLDIR) -I$(IDIR) -g
 
 ODIR=obj
 
-_OBJ = CApp_OnCleanup.o CApp_OnEvent.o CApp_OnInit.o CApp_OnLoop.o CApp_OnRender.o utility.o planet.o
+_OBJ = CApp_OnCleanup.o CApp_OnEvent.o CApp_OnInit.o CApp_OnLoop.o CApp_OnRender.o utility.o planet.o quadtree.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 

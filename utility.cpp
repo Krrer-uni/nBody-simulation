@@ -82,3 +82,28 @@ DrawFillCircle(SDL_Renderer * renderer, int x, int y, int radius)
 
    //  return status;
 }
+
+    
+void DrawQuadTree(SDL_Renderer * renderer, quadTree* tree){
+    if(tree->root != NULL){
+        DrawQuadTreeNode(renderer, tree->root);
+    }
+}
+
+void DrawQuadTreeNode(SDL_Renderer* renderer, Node* node){
+    SDL_RenderDrawLine(renderer, node->minX,node->minY,node->minX, node->maxY);
+    SDL_RenderDrawLine(renderer, node->minX,node->maxY,node->maxX, node->maxY);
+    SDL_RenderDrawLine(renderer, node->maxX,node->maxY,node->maxX, node->minY);
+    SDL_RenderDrawLine(renderer, node->maxX,node->minY,node->minX, node->minY);
+
+    
+    if(!node->isLeaf){
+        DrawQuadTreeNode(renderer,node->topLeft);
+        DrawQuadTreeNode(renderer,node->topRight);
+        DrawQuadTreeNode(renderer,node->bottomLeft);
+        DrawQuadTreeNode(renderer,node->bottomRight);
+    }
+    // else{
+    //     SDL_RenderDrawLine(renderer, node->maxX,node->maxY,node->minX, node->minY);
+    // }
+}

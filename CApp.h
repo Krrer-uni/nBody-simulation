@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include "utility.h"
 #include "planet.h"
+#include "quadtree.h"
 #include <vector>
 #include <random>
 #include <cmath>
@@ -27,6 +28,8 @@ class CApp {
         double G;
         uint8_t FPS_CAP;
         double TPF; //time per frame
+        quadTree* tree;
+        int tree_threshold;
     public:
  
         CApp();
