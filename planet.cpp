@@ -50,10 +50,48 @@ Planet::Planet(double x, double y, double radius, double V_x, double V_y){
     this->ay = 0;
     this->radius = radius;
 
-    this->color[0] = color_dist(rng);
-    this->color[1] = color_dist(rng);
-    this->color[2] = color_dist(rng);
+    //this->color[0] = color_dist(rng);
+    //this->color[1] = color_dist(rng);
+    //this->color[2] = color_dist(rng);
+    //this->color[3] = 5;
+    
+    if (radius == 1) //jasnoniebieski
+    {
+    this->color[0] = 199;
+    this->color[1] = 231;
+    this->color[2] = 255;
     this->color[3] = 5;
+    }
+    else if (radius == 2) //fioletowy
+    {
+    this->color[0] = 235;
+    this->color[1] = 173;
+    this->color[2] = 231;
+    this->color[3] = 5;
+    }
+    else if (radius == 3) //brzoskwiniowy
+    {
+    this->color[0] = 255;
+    this->color[1] = 221;
+    this->color[2] = 198;
+    this->color[3] = 5;
+    }
+    else if (radius == 4) //pistacjowy
+    {
+    this->color[0] = 197;
+    this->color[1] = 235;
+    this->color[2] = 209;
+    this->color[3] = 5;
+    }
+    else
+    {
+    this->color[0] = 119;
+    this->color[1] = 134;
+    this->color[2] = 158;
+    this->color[3] = 255;
+    }
+    
+    
 }
 
 
